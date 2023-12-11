@@ -15,7 +15,7 @@ namespace Pong_4ITB_23_24
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Form1(new List<string>() { "Karel", "Aleš"}, 1f, 1f));
         }
     }
 }
