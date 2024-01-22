@@ -26,5 +26,11 @@ namespace Pong_4ITB_23_24
             label2.Text = names.ElementAt(1);
             label3.Text = "0:0";
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            game1.SetupPlayers(label1.Text, label2.Text, playerSpeed);
+            game1.SetupGame(ballSpeed);
+        }
     }
 }

@@ -25,7 +25,14 @@
         /// obsah této metody v editoru kódu.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
+            this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
+            // 
+            // updateTimer
+            // 
+            this.updateTimer.Interval = 17;
+            this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
             // Game
             // 
@@ -33,6 +40,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "Game";
             this.Size = new System.Drawing.Size(1462, 846);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Game_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Game_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Game_KeyUp);
             this.ResumeLayout(false);
@@ -40,5 +48,7 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.Timer updateTimer;
     }
 }
