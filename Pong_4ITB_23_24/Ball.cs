@@ -54,5 +54,10 @@ namespace Pong_4ITB_23_24
             x += dx;
             y += dy;
         }
+
+        internal bool FlyingLeft()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
