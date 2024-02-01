@@ -14,11 +14,17 @@ namespace Pong_4ITB_23_24
 
         double x, y;
 
+        public Point TopPoint => new Point((int)x, (int)(y - size / 2));
+        public Point BottomPoint => new Point((int)x, (int)(y + size / 2));
+        public Point LeftPoint => new Point((int)(x - size / 2), (int)y);
+        public Point RightPoint => new Point((int)(x + size / 2), (int)y);
+
         private int gameWidth;
         private int gameHeight;
 
         private double speed;
         private double angle;
+        public double Angle => angle;
         private int size;
 
         private Random random = new Random();
@@ -30,9 +36,11 @@ namespace Pong_4ITB_23_24
             this.speed = speed;
 
             size = 60;
-            angle = random.Next(20,40);
+            angle = random.Next(20, 40);
             angle *= (random.Next(2) == 1 ? -1 : 1);
             angle += (random.Next(2) == 1 ? 180 : 0);
+
+            angle = 120;
 
             x = gameWidth / 2;
             y = gameHeight / 2;
@@ -55,9 +63,15 @@ namespace Pong_4ITB_23_24
             y += dy;
         }
 
+        public void ChangeAngle(double newAngle)
+        {
+            angle = newAngle;
+        }
+
         internal bool FlyingLeft()
         {
-            throw new NotImplementedException();
+            return true;
+            //throw new NotImplementedException();
         }
     }
 }

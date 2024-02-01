@@ -25,10 +25,17 @@ namespace Pong_4ITB_23_24
         private List<Keys> controlKeys;
         public List<Keys> Keys => controlKeys;
 
+        public float PosX { get => posX; set => posX = value; }
+        public float PosY { get => posY; set => posY = value; }
+        public static int Height { get => height; set => height = value; }
+
         private int gameWidth;
         private int gameHeight;
 
+        private bool isLeft;
+
         public Player(bool isLeft, string name, float speed, Color color, List<Keys> controlKeys, int gameWidth, int gameHeight) {
+            this.isLeft = isLeft;
             this.name = name;
             this.score = 0;
             this.speed = speed;
@@ -38,13 +45,13 @@ namespace Pong_4ITB_23_24
             this.gameWidth = gameWidth;
             this.gameHeight = gameHeight;
 
-            this.posX = isLeft ? 40 : gameWidth - 40 - width;
-            this.posY = gameHeight / 2;
+            this.PosX = isLeft ? 40 : gameWidth - 40 - width;
+            this.PosY = gameHeight / 2;
         }
 
         public void Draw(Graphics g)
         {
-            g.FillRectangle(color, posX, posY - height / 2, width, height);
+            g.FillRectangle(color, PosX, PosY - Height / 2, width, Height);
         }
 
         public void SetDirection(float dir)
@@ -54,15 +61,30 @@ namespace Pong_4ITB_23_24
 
         public void Update()
         {
-            float newY = posY + currentMovement * speed;
+            float newY = PosY + currentMovement * speed;
 
-            if (newY - height / 2 > 0 && newY + height / 2 < gameHeight)
-                posY = newY;
+            if (newY - Height / 2 > 0 && newY + Height / 2 < gameHeight)
+                PosY = newY;
         }
 
         internal bool CollidesWith(Ball ball)
         {
-            // Check kolize - jen jeden bod na míčku levý/pravý
+            Point pointToCheck;
+
+            if(isLeft && ball.FlyingLeft())
+            {
+                pointToCheck = ball.LeftPoint;
+            }
+            else
+            {
+                pointToCheck = ball.RightPoint;
+            }
+
+            if (pointToCheck.X > PosX && pointToCheck.X < PosX + width &&
+                pointToCheck.Y < PosY + Height / 2 && pointToCheck.Y > PosY - Height / 2
+                )
+                return true;
+
             return false;
         }
     }

@@ -78,13 +78,25 @@ namespace Pong_4ITB_23_24
         {
             if (player.CollidesWith(ball))
             {
+                double newAngle = Remap(ball.LeftPoint.Y, player.PosY - Player.Height / 2, player.PosY + Player.Height / 2,
+                    -70, 70);
+
+                ball.ChangeAngle(newAngle);
                 // výpočet směru podle playera
             }
         }
 
+        private double Remap(double value, double from1, double to1, double from2, double to2)
+        {
+            return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+        }
+
         private void CheckWallCollisions()
         {
-
+            if(ball.TopPoint.Y < 0 || ball.BottomPoint.Y > Height)
+            {
+                ball.ChangeAngle(360 - ball.Angle);
+            } 
         }
 
         private void DoMovement() {
