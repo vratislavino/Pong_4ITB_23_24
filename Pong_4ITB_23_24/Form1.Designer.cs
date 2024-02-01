@@ -28,6 +28,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.game1 = new Pong_4ITB_23_24.Game();
             this.SuspendLayout();
             // 
@@ -61,6 +62,16 @@
             this.label3.Text = "label3";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label4.Location = new System.Drawing.Point(556, 199);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(495, 121);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Press SPACE to start";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // game1
             // 
             this.game1.Location = new System.Drawing.Point(75, 65);
@@ -73,6 +84,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1584, 949);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.game1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -90,6 +102,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private Game game1;
+        private System.Windows.Forms.Label label4;
     }
 }
 

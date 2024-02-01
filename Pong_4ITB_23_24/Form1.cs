@@ -31,6 +31,32 @@ namespace Pong_4ITB_23_24
         {
             game1.SetupPlayers(label1.Text, label2.Text, playerSpeed);
             game1.SetupGame(ballSpeed);
+            game1.RoundStarted += OnRoundStarted;
+            game1.RoundEnded += OnRoundEnded;
+        }
+
+        private void OnRoundEnded(Player player)
+        {
+            label4.Visible = true;
+            label3.Text = $"{game1.player1.Score}:{game1.player2.Score}";
+
+            if(player.Score == POINTS_TO_WIN)
+            {
+                game1.Dispose();
+                var res = MessageBox.Show(player.Name + " vyhrál. Chcete hrát znovu?",
+                    "VÝHRA", MessageBoxButtons.YesNo);
+                if(res == DialogResult.Yes) {
+                    Application.Restart();
+                } else
+                {
+                    Application.Exit();
+                }
+            }
+        }
+
+        private void OnRoundStarted()
+        {
+            label4.Visible = false;
         }
     }
 }

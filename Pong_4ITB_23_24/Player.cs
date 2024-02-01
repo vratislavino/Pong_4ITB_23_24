@@ -11,7 +11,17 @@ namespace Pong_4ITB_23_24
     public class Player : IDrawable, IMoveable
     {
         private string name;
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
         private int score;
+        public int Score
+        {
+            get { return score; }
+            set { score = value; }
+        }
 
         private float speed;
         private float posX;
@@ -67,25 +77,10 @@ namespace Pong_4ITB_23_24
                 PosY = newY;
         }
 
-        internal bool CollidesWith(Ball ball)
+        public bool ContainsPoint(Point point)
         {
-            Point pointToCheck;
-
-            if(isLeft && ball.FlyingLeft())
-            {
-                pointToCheck = ball.LeftPoint;
-            }
-            else
-            {
-                pointToCheck = ball.RightPoint;
-            }
-
-            if (pointToCheck.X > PosX && pointToCheck.X < PosX + width &&
-                pointToCheck.Y < PosY + Height / 2 && pointToCheck.Y > PosY - Height / 2
-                )
-                return true;
-
-            return false;
+            Rectangle rect = new Rectangle((int)posX, (int)(posY - height / 2), width, height);
+            return rect.Contains(point);
         }
     }
 }

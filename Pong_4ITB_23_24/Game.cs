@@ -12,11 +12,15 @@ namespace Pong_4ITB_23_24
 {
     public partial class Game : UserControl
     {
-        Player player1;
-        Player player2;
+        public Player player1;
+        public Player player2;
         Ball ball;
 
-        public Game() {
+        public event Action RoundStarted;
+        public event Action<Player> RoundEnded;
+
+        public Game()
+        {
             InitializeComponent();
             DoubleBuffered = true;
         }
@@ -30,15 +34,31 @@ namespace Pong_4ITB_23_24
         public void SetupGame(float ballSpeed)
         {
             ball = new Ball(Width, Height, ballSpeed);
+            ball.Reset();
+            ball.BallLost += OnBallLost;
         }
 
-        private void Game_KeyDown(object sender, KeyEventArgs e) {
-            if(e.KeyCode == Keys.Space && !updateTimer.Enabled) { 
+        private void OnBallLost(bool leftLostBall)
+        {
+            Player winner = leftLostBall ? player2 : player1;
+            winner.Score++;
+            ball.Reset();
+            updateTimer.Stop();
+            RoundEnded?.Invoke(winner);
+
+            Refresh();
+        }
+
+        private void Game_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space && !updateTimer.Enabled)
+            {
+                RoundStarted?.Invoke();
                 updateTimer.Enabled = true;
             }
             if (!updateTimer.Enabled) return;
 
-            if(player1.Keys.Contains(e.KeyCode))
+            if (player1.Keys.Contains(e.KeyCode))
             {
                 if (player1.Keys.IndexOf(e.KeyCode) == 0)
                     player1.SetDirection(-1);
@@ -55,7 +75,8 @@ namespace Pong_4ITB_23_24
             }
         }
 
-        private void Game_KeyUp(object sender, KeyEventArgs e) {
+        private void Game_KeyUp(object sender, KeyEventArgs e)
+        {
         }
 
         private void updateTimer_Tick(object sender, EventArgs e)
@@ -65,25 +86,29 @@ namespace Pong_4ITB_23_24
             Refresh();
         }
 
-        private void CheckCollisions() {
-
+        private void CheckCollisions()
+        {
             CheckWallCollisions();
-            if(ball.FlyingLeft())
-                CheckCollisionsWithPlayer(player1);
-            else
-                CheckCollisionsWithPlayer(player2);
+            
+            if(player1.ContainsPoint(ball.LeftPoint)) {
+                double newAngle = GetNewAngle(player1);
+                ball.ChangeAngle(newAngle);
+            }
+
+            if(player2.ContainsPoint(ball.RightPoint))
+            {
+                double newAngle = GetNewAngle(player2);
+                newAngle *= -1;
+                ball.ChangeAngle(180 + newAngle);
+            }
+
+            ball.CheckWin();
         }
 
-        private void CheckCollisionsWithPlayer(Player player)
+        private double GetNewAngle(Player player)
         {
-            if (player.CollidesWith(ball))
-            {
-                double newAngle = Remap(ball.LeftPoint.Y, player.PosY - Player.Height / 2, player.PosY + Player.Height / 2,
+            return Remap(ball.LeftPoint.Y, player.PosY - Player.Height / 2, player.PosY + Player.Height / 2,
                     -70, 70);
-
-                ball.ChangeAngle(newAngle);
-                // výpočet směru podle playera
-            }
         }
 
         private double Remap(double value, double from1, double to1, double from2, double to2)
@@ -93,13 +118,14 @@ namespace Pong_4ITB_23_24
 
         private void CheckWallCollisions()
         {
-            if(ball.TopPoint.Y < 0 || ball.BottomPoint.Y > Height)
+            if (ball.TopPoint.Y < 0 || ball.BottomPoint.Y > Height)
             {
                 ball.ChangeAngle(360 - ball.Angle);
-            } 
+            }
         }
 
-        private void DoMovement() {
+        private void DoMovement()
+        {
             player1.Update();
             player2.Update();
             ball.Update();
@@ -107,9 +133,9 @@ namespace Pong_4ITB_23_24
 
         private void Game_Paint(object sender, PaintEventArgs e)
         {
-            player1.Draw(e.Graphics);
-            player2.Draw(e.Graphics);
-            ball.Draw(e.Graphics);
+            player1?.Draw(e.Graphics);
+            player2?.Draw(e.Graphics);
+            ball?.Draw(e.Graphics);
         }
     }
 }

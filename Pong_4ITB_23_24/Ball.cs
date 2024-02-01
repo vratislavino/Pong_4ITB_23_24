@@ -10,6 +10,8 @@ namespace Pong_4ITB_23_24
 {
     public class Ball : IDrawable, IMoveable
     {
+        public event Action<bool> BallLost;
+
         private Brush color = new SolidBrush(Color.Black);
 
         double x, y;
@@ -33,14 +35,16 @@ namespace Pong_4ITB_23_24
         {
             this.gameWidth = gameWidth;
             this.gameHeight = gameHeight;
+            size = 60;
             this.speed = speed;
 
-            size = 60;
+        }
+
+        public void Reset()
+        {
             angle = random.Next(20, 40);
             angle *= (random.Next(2) == 1 ? -1 : 1);
             angle += (random.Next(2) == 1 ? 180 : 0);
-
-            angle = 120;
 
             x = gameWidth / 2;
             y = gameHeight / 2;
@@ -68,10 +72,18 @@ namespace Pong_4ITB_23_24
             angle = newAngle;
         }
 
-        internal bool FlyingLeft()
+        internal void CheckWin()
         {
-            return true;
-            //throw new NotImplementedException();
+            if(LeftPoint.X < 0)
+            {
+                BallLost?.Invoke(true);
+                return;
+            }
+
+            if(RightPoint.X > gameWidth) {
+                BallLost?.Invoke(false);
+                return;
+            }
         }
     }
 }
